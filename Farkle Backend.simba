@@ -58,12 +58,9 @@ begin
     FreeBitmap(I);
 end;
 
-Procedure DiceActivation(Which : Integer; Active: Boolean); //switches dice activation state
+Procedure DiceActivation(Which: Integer; Active: Boolean); //switches dice activation state
 begin
-  If Active then
-    Dice[Which].Active := True
-  else
-    Dice[Which].Active := False;
+  Dice[Which].Active := Active;
 end;
 
 procedure ActivateAllDice;
