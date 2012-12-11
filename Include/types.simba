@@ -1,0 +1,13 @@
+
+
+type
+  TCardSuit = (CS_SPADE, CS_HEART, CS_DIAMOND, CS_CLUB);
+  TCardRank = (CR_2, CR_3, CR_4, CR_5, CR_6, 
+               CR_7, CR_8, CR_9, CR_10, CR_J,
+	       CR_Q, CR_K, CR_A);
+  TCard = record
+    Rank: TCardRank;
+    Suit: TCardSuit;
+  end;
+  THand = array of TCard;
+  THands = array of THand;
