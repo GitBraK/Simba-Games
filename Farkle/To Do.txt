@@ -1,0 +1,4 @@
+-Make a Function to check for conflicting dice states. ie 
+--Selected but not active. 
+--Scorable but not active.
+--Selected but not Scorable.
