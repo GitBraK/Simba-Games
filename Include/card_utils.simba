@@ -1,0 +1,80 @@
+
+procedure SortHand(var Hand: THand);
+var
+  L, H, I: UInt32;
+begin
+  L := Low(Hand) + 1;
+  H := High(Hand) - 1;
+
+  for I := L to H do
+  begin
+    if (Ord(Hand[I].Rank) < Ord(Hand[I - 1].Rank)) then
+      Swap(Hand[1], Hand[I - 1]);
+
+    if (Ord(Hand[I].Rank) > Ord(Hand[I + 1].Rank)) then
+    begin
+      Swap(Hand[I], Hand[I + 1]);
+      I := Max(I - 2, L);
+    end;
+  end;
+end;
+
+function isQuads(const Hand: THand; out Kicker: TCard): boolean;
+begin
+
+end;
+
+function isFullHouse(const Hand: THand): boolean;
+begin
+
+end;
+
+function isFlush(const Hand: THand): boolean;
+begin
+
+end;
+
+function isStraight(const Hand: THand): boolean;
+begin
+
+end;
+
+function isTrips(const Hand: THand; out Kickers: THand): boolean;
+begin
+
+end;
+
+function isTwoPair(const Hand: THand; out Kicker: TCard): boolean;
+begin
+
+end;
+
+function isPair(const Hand: THand; out Kickers: THand): boolean;
+begin
+
+end;
+
+function RankHand(var Hand: THand): UInt32;
+var
+  Kickers: THand;
+  Kicker: TCard;
+begin
+  SortHand(Hand);
+
+  //TODO: Think of card points
+
+  if (isFlush(Hand) and isStraight(Hand)) then
+  begin
+    //Best Hand in Game!
+  end;
+
+  //if (isQuads(Hand, Kicker)) then
+  //if (isFullHouse(Hand)) then
+  //if (isFlush(Hand)) then
+  //if (isStraight(Hand)) then
+  //if (isTrips(Hand, Kickers)) then
+  //if (isTwoPair(Hand, Kicker)) then
+  //if (isPair(Hand, Kickers)) then
+
+end;
+
