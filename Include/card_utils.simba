@@ -14,67 +14,154 @@ begin
     if (Ord(Hand[I].Rank) > Ord(Hand[I + 1].Rank)) then
     begin
       Swap(Hand[I], Hand[I + 1]);
-      I := Max(I - 2, L);
+      I := Max(I - 2, L - 1);
     end;
   end;
 end;
 
-function isQuads(const Hand: THand; out Kicker: TCard): boolean;
+function isQuads(const Hand: THand; out Quad: TCardRank; out Kicker: TCard): boolean;
 begin
-
+  Result := False;
 end;
 
-function isFullHouse(const Hand: THand): boolean;
+function isFullHouse(const Hand: THand; out Trips, Pair: TCardRank): boolean;
 begin
-
+  Result := False;
 end;
 
-function isFlush(const Hand: THand): boolean;
+function isFlush(const Hand: THand; out HighRank: TCardRank): boolean;
 begin
-
+  Result := False;
 end;
 
-function isStraight(const Hand: THand): boolean;
+function isStraight(const Hand: THand; out HighRank: TCardRank): boolean;
 begin
-
+  Result := False;
 end;
 
-function isTrips(const Hand: THand; out Kickers: THand): boolean;
+function isTrips(const Hand: THand; out Rank: TCardRank; out Kickers: THand): boolean;
 begin
-
+  Result := False;
 end;
 
-function isTwoPair(const Hand: THand; out Kicker: TCard): boolean;
+function isTwoPair(const Hand: THand; out FRank, SRank: TCardRank; out Kicker: TCard): boolean;
 begin
-
+  Result := False;
 end;
 
-function isPair(const Hand: THand; out Kickers: THand): boolean;
+function isPair(const Hand: THand; out Rank: TCardRank; out Kickers: THand): boolean;
 begin
-
+  Result := False;
 end;
 
 function RankHand(var Hand: THand): UInt32;
 var
+  H, I: UInt32;
   Kickers: THand;
   Kicker: TCard;
+  Ranks: array[0..1] of TCardRank;
 begin
   SortHand(Hand);
 
   //TODO: Think of card points
 
-  if (isFlush(Hand) and isStraight(Hand)) then
+  if (isFlush(Hand, Ranks[0]) and isStraight(Hand, Ranks[0])) then
   begin
     //Best Hand in Game!
+  end else
+  if (isQuads(Hand, Ranks[0], Kicker)) then
+  begin
+
+  end else
+  if (isFullHouse(Hand, Ranks[0], Ranks[1])) then
+  begin
+
+  end else
+  if (isFlush(Hand, Ranks[0])) then
+  begin
+
+  end else
+  if (isStraight(Hand, Ranks[0])) then
+  begin
+
+  end else
+  if (isTrips(Hand, Ranks[0], Kickers)) then
+  begin
+
+  end else
+  if (isTwoPair(Hand, Ranks[0], Ranks[1], Kicker)) then
+  begin
+
+  end else
+  if (isPair(Hand, Ranks[0], Kickers)) then
+  begin
+
+  end else
+  begin
+    H := High(Hand);
+    for I := 0 to H do
+      Result := Result + Ord(Hand[I].Rank) * floor(pow(10, I));
   end;
+end;
 
-  //if (isQuads(Hand, Kicker)) then
-  //if (isFullHouse(Hand)) then
-  //if (isFlush(Hand)) then
-  //if (isStraight(Hand)) then
-  //if (isTrips(Hand, Kickers)) then
-  //if (isTwoPair(Hand, Kicker)) then
-  //if (isPair(Hand, Kickers)) then
+function RandomRank(): TCardRank;
+begin
+  case Random(13) of
+    0: Result := CR_2;
+    1: Result := CR_3;
+    2: Result := CR_4;
+    3: Result := CR_5;
+    4: Result := CR_6;
+    5: Result := CR_7;
+    6: Result := CR_8;
+    7: Result := CR_9;
+    8: Result := CR_10;
+    9: Result := CR_J;
+    10: Result := CR_Q;
+    11: Result := CR_K;
+    12: Result := CR_A;
+  end;
+end;
 
+function RandomSuit(): TCardSuit;
+begin
+  case Random(4) of
+    0: Result := CS_SPADE;
+    1: Result := CS_HEART;
+    2: Result := CS_DIAMOND;
+    3: Result := CS_CLUB;
+  end;
+end;
+
+function RandomCard(): TCard;
+begin
+  Result.Rank := RandomRank();
+  Result.Suit := RandomSuit();
+end;
+
+function RankStr(const Rank: TCardRank): string;
+begin
+  case (Rank) of
+    CR_2..CR_10: Result := IntToStr(Ord(Rank));
+    CR_J: Result := 'J';
+    CR_Q: Result := 'Q';
+    CR_K: Result := 'K';
+    CR_A: Result := 'A';
+  end;
+end;
+
+function SuitStr(const Suit: TCardSuit): string;
+begin
+  case (Suit) of
+    CS_SPADE: Result := 'Spades';
+    CS_HEART: Result := 'Hearts';
+    CS_DIAMOND: Result := 'Diamonds';
+    CS_CLUB: Result := 'Clubs';
+  end;
+end;
+
+function CardStr(const Card: TCard): string;
+begin
+  Result := RankStr(Card.Rank) + ' of ' + SuitStr(Card.Suit);
 end;
 

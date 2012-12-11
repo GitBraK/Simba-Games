@@ -7,30 +7,12 @@ var
   Hand: THand;
   I: UInt32;
 
-function RandomRank(): TCardRank;
-begin
-  case Random(13) of
-    0: Result := CR_2;
-    1: Result := CR_3;
-    2: Result := CR_4;
-    3: Result := CR_5;
-    4: Result := CR_6;
-    5: Result := CR_7;
-    6: Result := CR_8;
-    7: Result := CR_9;
-    8: Result := CR_10;
-    9: Result := CR_J;
-    10: Result := CR_Q;
-    11: Result := CR_K;
-    12: Result := CR_A;
-  end;
-end;
-
 begin
   SetLength(Hand, 5);
   for I := 0 to 4 do
-    Hand[I].Rank := RandomRank();
-  WriteLn(ToStr(Hand));
-  SortHand(Hand);
-  WriteLn(ToStr(Hand));
+  begin
+    Hand[I] := RandomCard();
+    WriteLn(CardStr(Hand[I]));
+  end;
+  WriteLn(RankHand(Hand));
 end.
