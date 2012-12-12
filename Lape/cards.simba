@@ -1,0 +1,117 @@
+program new;
+
+type
+  TSuit = (CS_SPADE = 0, CS_HEART, CS_CLUB, CS_DIAMOND);
+  TRank = (CR_2, CR_3, CR_4, CR_5, CR_6,
+           CR_7, CR_8, CR_9, CR_10, CR_J,
+           CR_Q, CR_K, CR_A);
+
+  TCard = record
+    Suit: TSuit;
+    Rank: TRank;
+  end;
+  THand = array of TCard;
+  TDeck = array of TCard;
+
+function Card(const Suit: TSuit; const Rank: TRank): TCard;
+begin
+  Result.Suit := Suit;
+  Result.Rank := Rank;
+end;
+
+function TSuit.ToStr(const Short: boolean = False): string;
+const
+  LongArr = ['Spade', 'Heart', 'Club', 'Diamond'];
+  ShortArr = ['♠', '♥', '♣', '♦'];
+begin
+  Result := LongArr[Ord(Self)];
+  if (Short) then
+    Result := ShortArr[Ord(Self)];
+end;
+
+function TRank.ToStr(): string;
+begin
+  case Self of
+    CR_2..CR_10: Result := IntToStr(Ord(Self) + 2);
+    CR_J: Result := 'J';
+    CR_Q: Result := 'Q';
+    CR_K: Result := 'K';
+    CR_A: Result := 'A';
+  end;
+end;
+
+function TCard.ToStr(const Short: boolean): string;
+var
+  FormatStr: string;
+begin
+  FormatStr := '%s of %s';
+  if (Short) then
+    FormatStr := '%s%s';
+  Result := Format(FormatStr, [Self.Rank.ToStr(), Self.Suit.ToStr(Short)]);
+end;
+
+function THand.ToStr(const Short: boolean): string;
+var
+  I: UInt8;
+begin
+  Result := '(';
+
+  for I := 0 to High(Self) - 1 do
+    Result := Result + Self[I].ToStr(Short) + ', ';
+
+  Result := Result + Self[High(Self)].ToStr(Short) + ')'
+end;
+
+procedure TDeck.Reset();
+var
+  I: UInt8;
+  Suit: TSuit;
+  Rank: TRank;
+begin
+  SetLength(Self, 52);
+  I := 0;
+  for Suit := CS_SPADE to CS_DIAMOND do
+    for Rank := CR_2 to CR_A do
+    begin
+      Self[I] := Card(Suit, Rank);
+      Inc(I);
+    end;
+end;
+
+procedure TDeck.Shuffle();
+var
+  I: UInt8;
+begin
+  for I := 0 to High(Self) do
+    Swap(Self[I], Self[Random(52)]);
+end;
+
+function TDeck.Pop(): TCard;
+begin
+  Result := Self[High(Self)];
+  SetLength(Self, High(Self));
+end;
+
+function TDeck.Pop(const Count: UInt8): THand; overload;
+var
+  H, I: UInt8;
+begin
+  SetLength(Result, Count);
+  for I := 0 to Count - 1 do
+    Result[I] := Self.Pop();
+end;
+
+var
+  Deck: TDeck;
+  Hand1, Hand2: THand;
+
+begin
+  Deck.Reset();
+  Deck.Shuffle();
+
+  Hand1 := Deck.Pop(5);
+  Hand2 := Deck.Pop(5);
+
+  WriteLn(Hand1.ToStr(True));
+  WriteLn(Hand2.ToStr(True));
+end.
